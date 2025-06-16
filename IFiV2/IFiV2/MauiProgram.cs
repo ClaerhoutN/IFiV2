@@ -1,6 +1,7 @@
 ﻿using IFiV2.Services;
 using IFiV2.Shared.Services;
 using Microsoft.Extensions.Logging;
+using MudBlazor.Services;
 
 namespace IFiV2
 {
@@ -18,7 +19,7 @@ namespace IFiV2
 
             // Add device-specific services used by the IFiV2.Shared project
             builder.Services.AddSingleton<IFormFactor, FormFactor>();
-
+            builder.Services.AddMudServices();
             builder.Services.AddMauiBlazorWebView();
 
 #if DEBUG
