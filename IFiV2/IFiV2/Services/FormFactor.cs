@@ -1,4 +1,4 @@
-using IFiV2.Shared.Services;
+using IFiV2.Shared.Services.Interfaces;
 
 namespace IFiV2.Services
 {

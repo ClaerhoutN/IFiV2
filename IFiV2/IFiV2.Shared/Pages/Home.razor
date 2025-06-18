@@ -1,7 +1,25 @@
 ﻿@page "/"
-@using IFiV2.Shared.Services
 
-
+<MudDataGrid T="StockPosition" Items="_stockPositions" Loading=_isLoading Striped="true" Hover="true" Dense="true">
+    <Columns>
+        <PropertyColumn Property="@(x => x.Stock.GetType())" Title="Symbol" />
+    </Columns>
+</MudDataGrid>
 
 @code {
+    [Inject]
+    private IStockMarketService _stockMarketService { get; set; }
+    private IReadOnlyList<StockPosition> _stockPositions = new List<StockPosition>();
+    private bool _isLoading = true;
+    protected override async Task OnInitializedAsync()
+    {
+        await ReloadAsync();
+    }
+
+    private async Task ReloadAsync()
+    {
+        _isLoading = true;
+        _stockPositions = await _stockMarketService.GetStockPositionsAsync();
+        _isLoading = false;
+    }
 }

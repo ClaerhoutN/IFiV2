@@ -17,9 +17,10 @@
     <RootNamespace>IFiV2</RootNamespace>
     <UseMaui>true</UseMaui>
     <SingleProject>true</SingleProject>
+    <InvariantGlobalization>true</InvariantGlobalization>
     <ImplicitUsings>enable</ImplicitUsings>
     <EnableDefaultCssItems>false</EnableDefaultCssItems>
-    <Nullable>enable</Nullable>
+    <Nullable>annotations</Nullable>
 
     <!-- Display name -->
     <ApplicationTitle>IFiV2</ApplicationTitle>

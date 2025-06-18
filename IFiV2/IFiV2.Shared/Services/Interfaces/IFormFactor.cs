@@ -1,4 +1,4 @@
-namespace IFiV2.Shared.Services
+namespace IFiV2.Shared.Services.Interfaces
 {
     public interface IFormFactor
     {
