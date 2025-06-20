@@ -15,7 +15,7 @@ namespace IFiV2.Api.Domain.Services
         {
             foreach(var symbol in symbolsWithExchange)
             {
-                var stockDataPoints = await _eodHdService.GetEodAsync(symbol, DateOnly.FromDateTime(from.Date), DateOnly.FromDateTime(to.Date));
+                //var stockDataPoints = await _eodHdService.GetEodAsync(symbol, DateOnly.FromDateTime(from.Date), DateOnly.FromDateTime(to.Date));
             }
             return [new StockDataPoint { Symbol = "NYSE.AAPL" }];
         }

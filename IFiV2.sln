@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.14.36202.13
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IFiV2", "IFiV2\IFiV2\IFiV2.csproj", "{B72480BF-2053-451B-8E3B-9EF4D371BF6D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IFiV2.Client.Maui", "IFiV2.Client.Maui\IFiV2.Client.Maui.csproj", "{B72480BF-2053-451B-8E3B-9EF4D371BF6D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IFiV2.Shared", "IFiV2\IFiV2.Shared\IFiV2.Shared.csproj", "{8B4915B5-0E29-4DD2-89A6-0BF219E2B853}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IFiV2.Client.Shared", "IFiV2.Client.Shared\IFiV2.Client.Shared.csproj", "{8B4915B5-0E29-4DD2-89A6-0BF219E2B853}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IFiV2.Models", "IFiV2.Models\IFiV2.Models.csproj", "{30AA24DA-6D2A-4680-AE7A-4871C76DB924}"
 EndProject
