@@ -1,6 +1,8 @@
 ﻿@page "/"
 @page "/stock"
+
 <MudIconButton Icon="@Icons.Material.Filled.Add" Variant="Variant.Filled" Color="Color.Primary" OnClick="@(() => _navigationManager.NavigateTo("/stock/add"))"></MudIconButton>
+<MudIconButton Icon="@Icons.Material.Filled.Refresh" Disabled=_isLoading Variant="Variant.Filled" Color="Color.Primary" OnClick="@(() => ReloadAsync(true))"></MudIconButton>
 <MudDataGrid T="StockPosition" Items="_stockPositions" Loading=_isLoading Striped="true" Hover="true" Dense="true" SelectedItemChanged="@(sp => _navigationManager.NavigateTo($"/stock/position-details/{sp.Stock.SymbolWithExchange}"))">
     <Columns>
         <PropertyColumn Property="@(x => x.Stock.SymbolWithExchange)" Title="Symbol">
@@ -19,17 +21,23 @@
     private NavigationManager _navigationManager { get; set; }
     private IReadOnlyList<StockPosition> _stockPositions = new List<StockPosition>();
     private bool _isLoading = true;
+    private static bool _isFirstLoad = true;
     protected override async Task OnInitializedAsync()
     {
-        await ReloadAsync();
+        await ReloadAsync(false);
     }
 
-    private async Task ReloadAsync()
+    private async Task ReloadAsync(bool refreshDataPoints)
     {
         _isLoading = true;
         try
         {
-            _stockPositions = await _stockMarketService.GetStockPositionsAsync();
+            _stockPositions = await _stockMarketService.GetStockPositionsAsync(_isFirstLoad, refreshDataPoints);
+            _isFirstLoad = false;
+        }
+        catch
+        {
+            //todo: log and inform user
         }
         finally
         {

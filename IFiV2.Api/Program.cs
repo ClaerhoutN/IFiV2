@@ -24,14 +24,14 @@ builder.Services.AddRefitClient<IFiV2.Api.Domain.ApiServices.IEodHdService>()
 
 var app = builder.Build();
 
-var todosApi = app.MapGroup("/api/stockmarket");
-todosApi.MapGet("/stock-data-point", async (IStockMarketService _stockMarketService, 
+var stockMarketApi = app.MapGroup("/api/stockmarket");
+stockMarketApi.MapGet("/stock-data-point", async (IStockMarketService _stockMarketService, 
     string[] symbolsWithExchange, Interval interval, DateTimeOffset from, DateTimeOffset to) =>
     {
         var dataPoints = await _stockMarketService.GetStockDataPointsAsync(symbolsWithExchange, interval, from, to);
         return Results.Ok(dataPoints);
     });
-todosApi.MapGet("/search", async (IStockMarketService _stockMarketService,
+stockMarketApi.MapGet("/search", async (IStockMarketService _stockMarketService,
     string search) =>
 {
     var stocks = await _stockMarketService.SearchAsync(search);

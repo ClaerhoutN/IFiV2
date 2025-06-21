@@ -1,10 +1,11 @@
 ﻿@page "/stock/position-details/{SymbolWithExchange}"
 
+<MudButton Disabled=_isLoading Variant="Variant.Filled" Color="Color.Primary" OnClick="@(() => _navigationManager.NavigateTo("/stock"))">Back</MudButton>
 @if(_isLoading)
 {
     <MudProgressCircular Color="Color.Primary" Indeterminate="true" />
 }
-else
+else if (_stockPosition != null)
 {
     <MudCard>
         <MudCardHeader>
@@ -15,7 +16,6 @@ else
         </MudCardContent>
         <MudCardActions>
             <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="RemoveStockPositionAsync">Remove</MudButton>
-            <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@(() => _navigationManager.NavigateTo("/stock"))">Back</MudButton>
         </MudCardActions>
     </MudCard>
 }
@@ -37,6 +37,10 @@ else
         {
             _stockPosition = _stockMarketService.GetStockPosition(SymbolWithExchange);
         }
+        catch
+        {
+            //todo: log and inform user
+        }
         finally
         {
             _isLoading = false;
@@ -45,7 +49,16 @@ else
 
     private async Task RemoveStockPositionAsync()
     {
-        await _stockMarketService.RemoveStockPositiomAsync(_stockPosition);
-        _navigationManager.NavigateTo($"/stock");
+        _isLoading = true;
+        try
+        {
+            await _stockMarketService.RemoveStockPositiomAsync(_stockPosition);
+            _navigationManager.NavigateTo($"/stock");
+        }
+        catch
+        {
+            //todo: log and inform user
+            _isLoading = false;
+        }
     }
 }

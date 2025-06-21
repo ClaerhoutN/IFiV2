@@ -2,7 +2,7 @@ using IFiV2.Client.Shared.Services.Interfaces;
 
 namespace IFiV2.Client.Maui.Services
 {
-    public class FormFactor : IFormFactor
+    internal class FormFactor : IFormFactor
     {
         public string GetFormFactor()
         {

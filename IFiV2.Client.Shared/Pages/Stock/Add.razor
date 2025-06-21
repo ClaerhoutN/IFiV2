@@ -1,8 +1,8 @@
 ﻿@page "/stock/add"
 
-<MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@(() => _navigationManager.NavigateTo("/stock"))">Back</MudButton>
+<MudButton Disabled=_isLoading Variant="Variant.Filled" Color="Color.Primary" OnClick="@(() => _navigationManager.NavigateTo("/stock"))">Back</MudButton>
 
-<MudTextField T="string" Label="Search symbol" ValueChanged="SearchAsync" />
+<MudTextField Disabled=_isLoading T="string" Label="Search symbol" ValueChanged="SearchAsync" />
 @if (_isLoading)
 {
     <MudProgressLinear Color="Color.Primary" Indeterminate=true />
@@ -32,6 +32,10 @@ else
             _searchResults.Clear();
             _searchResults.AddRange(await _stockMarketService.SearchAsync(searchTerm));
         }
+        catch
+        {
+            //todo: log and inform user
+        }
         finally
         {
             _isLoading = false;
@@ -39,7 +43,16 @@ else
     }
     private async Task AddStockAsync(Stock stock)
     {
-        await _stockMarketService.AddStockPositionAsync(stock);
-        _navigationManager.NavigateTo($"/stock");
+        _isLoading = true;
+        try
+        {
+            await _stockMarketService.AddStockPositionAsync(stock);
+            _navigationManager.NavigateTo($"/stock");
+        }
+        catch
+        {
+            //todo: log and inform user
+            _isLoading = false;
+        }
     }
 }

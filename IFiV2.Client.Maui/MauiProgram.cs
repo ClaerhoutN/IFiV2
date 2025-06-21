@@ -34,6 +34,7 @@ namespace IFiV2.Client.Maui
 
             builder.Services.AddSingleton<IFormFactor, FormFactor>();
             builder.Services.AddSingleton<IStockMarketService, StockMarketService>();
+            builder.Services.AddSingleton<IFiV2.Client.Shared.Services.Interfaces.IStockFileService, StockFileService>();
 
             var clientBuilder = builder.Services.AddRefitClient<Shared.ApiServices.IStockMarketService>()
                 .ConfigureHttpClient(c => c.BaseAddress = new Uri(builder.Configuration["StockMarketApi:Url"]));

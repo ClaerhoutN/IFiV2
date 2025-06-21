@@ -9,7 +9,7 @@ namespace IFiV2.Client.Shared.Services.Interfaces
 {
     public interface IStockMarketService
     {
-        Task<IReadOnlyList<StockPosition>> GetStockPositionsAsync();
+        Task<IReadOnlyList<StockPosition>> GetStockPositionsAsync(bool fromFile = false, bool refreshDataPoints = false);
         Task AddStockPositionAsync(Stock stock);
         Task RemoveStockPositiomAsync(StockPosition stockPosition);
         Task<IReadOnlyList<Stock>> SearchAsync(string search);

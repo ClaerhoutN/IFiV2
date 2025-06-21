@@ -29,7 +29,6 @@ namespace IFiV2.Api.Domain.Services
                         Volume = x.Volume
                     });
                 stockDataPoints.AddRange(stockDataPointsFromApi);
-                //todo: fetch properies for base class Stock?
             }
             return stockDataPoints;
         }
