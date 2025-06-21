@@ -1,0 +1,51 @@
+﻿@page "/stock/position-details/{SymbolWithExchange}"
+
+@if(_isLoading)
+{
+    <MudProgressCircular Color="Color.Primary" Indeterminate="true" />
+}
+else
+{
+    <MudCard>
+        <MudCardHeader>
+            <MudText Typo="Typo.h4">@_stockPosition.Stock.SymbolWithExchange (@_stockPosition.Stock.Country)</MudText>
+            <MudText Typo="Typo.subtitle1">@_stockPosition.Stock.Name</MudText>
+        </MudCardHeader>
+        <MudCardContent>
+        </MudCardContent>
+        <MudCardActions>
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="RemoveStockPositionAsync">Remove</MudButton>
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@(() => _navigationManager.NavigateTo("/stock"))">Back</MudButton>
+        </MudCardActions>
+    </MudCard>
+}
+
+@code {
+    [Parameter]
+    public string SymbolWithExchange { get; set; }
+    [Inject]
+    private IStockMarketService _stockMarketService { get; set; }
+    [Inject]
+    private NavigationManager _navigationManager { get; set; }
+    private StockPosition _stockPosition;
+    private bool _isLoading = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _isLoading = true;
+        try
+        {
+            _stockPosition = _stockMarketService.GetStockPosition(SymbolWithExchange);
+        }
+        finally
+        {
+            _isLoading = false;
+        }
+    }
+
+    private async Task RemoveStockPositionAsync()
+    {
+        await _stockMarketService.RemoveStockPositiomAsync(_stockPosition);
+        _navigationManager.NavigateTo($"/stock");
+    }
+}

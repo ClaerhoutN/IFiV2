@@ -1,0 +1,45 @@
+﻿@page "/stock/add"
+
+<MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@(() => _navigationManager.NavigateTo("/stock"))">Back</MudButton>
+
+<MudTextField T="string" Label="Search symbol" ValueChanged="SearchAsync" />
+@if (_isLoading)
+{
+    <MudProgressLinear Color="Color.Primary" Indeterminate=true />
+}
+else
+{
+    <MudList T="Stock" SelectedValueChanged="AddStockAsync">
+        @foreach (var stock in _searchResults)
+        {
+            <MudListItem Value="@stock" Text="@(stock.SymbolWithExchange + " - " + stock.Name)" />
+        }
+    </MudList>
+}
+
+@code {
+    private readonly List<Stock> _searchResults = new List<Stock>();
+    [Inject]
+    private IStockMarketService _stockMarketService { get; set; }
+    [Inject]
+    private NavigationManager _navigationManager { get; set; }
+    private bool _isLoading = false;
+    private async Task SearchAsync(string searchTerm)
+    {
+        _isLoading = true;
+        try
+        {
+            _searchResults.Clear();
+            _searchResults.AddRange(await _stockMarketService.SearchAsync(searchTerm));
+        }
+        finally
+        {
+            _isLoading = false;
+        }
+    }
+    private async Task AddStockAsync(Stock stock)
+    {
+        await _stockMarketService.AddStockPositionAsync(stock);
+        _navigationManager.NavigateTo($"/stock");
+    }
+}

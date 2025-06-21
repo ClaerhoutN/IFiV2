@@ -1,0 +1,39 @@
+﻿@page "/"
+@page "/stock"
+<MudIconButton Icon="@Icons.Material.Filled.Add" Variant="Variant.Filled" Color="Color.Primary" OnClick="@(() => _navigationManager.NavigateTo("/stock/add"))"></MudIconButton>
+<MudDataGrid T="StockPosition" Items="_stockPositions" Loading=_isLoading Striped="true" Hover="true" Dense="true" SelectedItemChanged="@(sp => _navigationManager.NavigateTo($"/stock/position-details/{sp.Stock.SymbolWithExchange}"))">
+    <Columns>
+        <PropertyColumn Property="@(x => x.Stock.SymbolWithExchange)" Title="Symbol">
+            <CellTemplate>
+                <MudText Typo="Typo.h4">@context.Item.Stock.SymbolWithExchange (@context.Item.Stock.Country)</MudText>
+                <MudText Typo="Typo.subtitle1">@context.Item.Stock.Name</MudText>
+            </CellTemplate>
+        </PropertyColumn>
+    </Columns>
+</MudDataGrid>
+
+@code {
+    [Inject]
+    private IStockMarketService _stockMarketService { get; set; }
+    [Inject]
+    private NavigationManager _navigationManager { get; set; }
+    private IReadOnlyList<StockPosition> _stockPositions = new List<StockPosition>();
+    private bool _isLoading = true;
+    protected override async Task OnInitializedAsync()
+    {
+        await ReloadAsync();
+    }
+
+    private async Task ReloadAsync()
+    {
+        _isLoading = true;
+        try
+        {
+            _stockPositions = await _stockMarketService.GetStockPositionsAsync();
+        }
+        finally
+        {
+            _isLoading = false;
+        }
+    }
+}

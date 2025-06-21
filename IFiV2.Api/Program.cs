@@ -8,10 +8,10 @@ using System.Text.RegularExpressions;
 
 var builder = WebApplication.CreateSlimBuilder(args);
 
-builder.Services.ConfigureHttpJsonOptions(options =>
-{
-    options.SerializerOptions.TypeInfoResolverChain.Insert(0, AppJsonSerializerContext.Default);
-});
+//builder.Services.ConfigureHttpJsonOptions(options =>
+//{
+//    options.SerializerOptions.TypeInfoResolverChain.Insert(0, AppJsonSerializerContext.Default);
+//});
 
 builder.Services.AddTransient<IStockMarketService, StockMarketService>();
 
@@ -31,12 +31,18 @@ todosApi.MapGet("/stock-data-point", async (IStockMarketService _stockMarketServ
         var dataPoints = await _stockMarketService.GetStockDataPointsAsync(symbolsWithExchange, interval, from, to);
         return Results.Ok(dataPoints);
     });
+todosApi.MapGet("/search", async (IStockMarketService _stockMarketService,
+    string search) =>
+{
+    var stocks = await _stockMarketService.SearchAsync(search);
+    return Results.Ok(stocks);
+});
 
 app.Run();
 
-[JsonSerializable(typeof(IReadOnlyList<StockDataPoint>))]
-[JsonSerializable(typeof(IReadOnlyList<IFiV2.Api.Domain.Dto.StockDataPoint>))]
-internal partial class AppJsonSerializerContext : JsonSerializerContext
-{
+//[JsonSerializable(typeof(IReadOnlyList<StockDataPoint>))]
+//[JsonSerializable(typeof(IReadOnlyList<IFiV2.Api.Domain.Dto.StockDataPoint>))]
+//internal partial class AppJsonSerializerContext : JsonSerializerContext
+//{
 
-}
+//}
