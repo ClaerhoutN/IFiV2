@@ -38,7 +38,7 @@ namespace IFiV2.Models
         public double Volume { get; set; }
 
         #region override properties from base class to prevent them from being serialized
-        [JsonIgnore]
+        //[JsonIgnore]
         public override string SymbolWithExchange
         {
             get => base.SymbolWithExchange;

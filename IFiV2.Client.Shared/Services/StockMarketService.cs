@@ -32,7 +32,11 @@ namespace IFiV2.Client.Shared.Services
             {
                 var dataPointsDictionary = await GetCompletedStockDataPointsAsync(_stockPositions.Select(x => (x.Stock.SymbolWithExchange, x.HistoricalData)).ToArray());
                 foreach (var stockPosition in _stockPositions)
-                    stockPosition.HistoricalData = dataPointsDictionary[stockPosition.Stock.SymbolWithExchange];
+                {
+                    stockPosition.HistoricalData = dataPointsDictionary[stockPosition.Stock.SymbolWithExchange]
+                        .Select(sdp => new StockDataPoint(stockPosition.Stock, sdp)).ToList();
+                }
+                await _stockFileService.SaveAsync(_stockPositions);
             }
             return _stockPositions;
         }
@@ -57,13 +61,24 @@ namespace IFiV2.Client.Shared.Services
             return _stockPositions.FirstOrDefault(sp => sp.Stock.SymbolWithExchange == symbolWithExchange);
         }
         private async Task<IReadOnlyList<StockDataPoint>> GetStockDataPoints(string symbolWithExchange) => (await GetCompletedStockDataPointsAsync((symbolWithExchange, null))).First().Value;
-        private async Task<Dictionary<string, IReadOnlyList<StockDataPoint>>> GetCompletedStockDataPointsAsync(params (string, IReadOnlyList<StockDataPoint>)[] dataPoints)
+        private async Task<Dictionary<string, List<StockDataPoint>>> GetCompletedStockDataPointsAsync(params (string, IReadOnlyList<StockDataPoint>)[] dataPoints)
         {
-            Dictionary<string, IReadOnlyList<StockDataPoint>> dataPointsDictionary = new Dictionary<string, IReadOnlyList<StockDataPoint>>();
-            foreach (var (symbolWithExchange, _) in dataPoints)
+            Dictionary<string, List<StockDataPoint>> dataPointsDictionary = new Dictionary<string, List<StockDataPoint>>();
+            (Interval, DateTimeOffset, DateTimeOffset)[] intervals = [
+                (Interval._1d, DateTimeOffset.Now.AddDays(-30), DateTimeOffset.Now),
+                (Interval._1h, DateTimeOffset.Now.AddDays(-7), DateTimeOffset.Now),
+                (Interval._15m, DateTimeOffset.Now.AddDays(-1), DateTimeOffset.Now)
+                ];
+            foreach(var (interval, from, to) in intervals)
             {
-                var newDataPoints = await _stockMarketService.GetStockDataPointsAsync([symbolWithExchange], Interval._1d, DateTimeOffset.Now.AddDays(-1), DateTimeOffset.Now);
-                dataPointsDictionary.Add(symbolWithExchange, newDataPoints);
+                var symbolsWithExchange = dataPoints.Select(dp => dp.Item1).ToArray();
+                var newDataPoints = await _stockMarketService.GetStockDataPointsAsync(symbolsWithExchange, interval, from, to);
+                foreach(var dataPointGroup in newDataPoints.GroupBy(dp => dp.SymbolWithExchange))
+                {
+                    if (!dataPointsDictionary.ContainsKey(dataPointGroup.Key))
+                        dataPointsDictionary[dataPointGroup.Key] = new List<StockDataPoint>();
+                    dataPointsDictionary[dataPointGroup.Key].AddRange(dataPointGroup);
+                }
             }
             return dataPointsDictionary;
         }

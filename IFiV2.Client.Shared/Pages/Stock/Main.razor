@@ -11,6 +11,8 @@
                 <MudText Typo="Typo.subtitle1">@context.Item.Stock.Name</MudText>
             </CellTemplate>
         </PropertyColumn>
+        <PropertyColumn Property="@(x => x.LatestDataPoint.Close)" Title="Value" />
+        <PropertyColumn Property="@(x => x._24HChange)" Title="24H change" Format="P" />
     </Columns>
 </MudDataGrid>
 

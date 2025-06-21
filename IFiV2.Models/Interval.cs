@@ -9,7 +9,8 @@ namespace IFiV2.Models
     public enum Interval
     {
         _1m, 
-        _5m, 
+        _5m,
+        _15m,
         _1h, 
         _1d
     }

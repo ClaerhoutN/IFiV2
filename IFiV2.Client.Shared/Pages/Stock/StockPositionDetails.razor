@@ -13,6 +13,17 @@ else if (_stockPosition != null)
             <MudText Typo="Typo.subtitle1">@_stockPosition.Stock.Name</MudText>
         </MudCardHeader>
         <MudCardContent>
+            <MudTextField ReadOnly="true" Value="@_stockPosition.LatestDataPoint.Timestamp" Label="Timestamp" />
+            <MudTextField ReadOnly="true" Value="@_stockPosition.LatestDataPoint.Open" Label="Open" />
+            <MudTextField ReadOnly="true" Value="@_stockPosition.LatestDataPoint.Close" Label="Close" />
+            <MudTextField ReadOnly="true" Value="@_stockPosition.LatestDataPoint.Adjusted_close" Label="Adjusted Close" />
+            <MudTextField ReadOnly="true" Value="@_stockPosition.LatestDataPoint.High" Label="High" />
+            <MudTextField ReadOnly="true" Value="@_stockPosition.LatestDataPoint.Low" Label="Low" />
+            <MudTextField ReadOnly="true" Value="@_stockPosition.LatestDataPoint.Volume" Label="Volume" />
+            <MudTextField ReadOnly="true" Value="@_stockPosition.LatestDataPoint.Type" Label="Type" />
+            <MudTextField ReadOnly="true" Value="@_stockPosition.LatestDataPoint.Country" Label="Country" />
+            <MudTextField ReadOnly="true" Value="@_stockPosition.LatestDataPoint.Currency" Label="Currency" />
+            <MudTextField ReadOnly="true" Value="@_stockPosition.LatestDataPoint.Isin" Label="ISIN" />
         </MudCardContent>
         <MudCardActions>
             <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="RemoveStockPositionAsync">Remove</MudButton>
