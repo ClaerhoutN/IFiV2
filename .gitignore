@@ -404,3 +404,4 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+/IFiV2.Api/Properties/ServiceDependencies/IFiv2-dev - Web Deploy/profile.arm.json
