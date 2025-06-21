@@ -6,7 +6,7 @@ using Refit;
 using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 
-var builder = WebApplication.CreateSlimBuilder(args);
+var builder = WebApplication.CreateBuilder(args);
 
 //builder.Services.ConfigureHttpJsonOptions(options =>
 //{
