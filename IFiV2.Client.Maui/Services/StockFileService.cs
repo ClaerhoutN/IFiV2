@@ -12,7 +12,7 @@ namespace IFiV2.Client.Maui.Services
     {
         private const int _version = 1;
         private readonly string _stockFilePath = Path.Combine(FileSystem.Current.CacheDirectory + "stocks.json");
-        private readonly string _stockDataPointFilePath = Path.Combine(FileSystem.Current.AppDataDirectory + "stockDataPoints.json");
+        private readonly string _stockDataPointFilePath = Path.Combine(FileSystem.Current.CacheDirectory + "stockDataPoints.json");
         public async Task SaveAsync(IEnumerable<StockPosition> stockPositions)
         {
             await File.WriteAllTextAsync(_stockFilePath, $"v{_version} " + System.Text.Json.JsonSerializer.Serialize(stockPositions.Select(x => x.Stock)));
