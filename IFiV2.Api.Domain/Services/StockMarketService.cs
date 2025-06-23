@@ -13,45 +13,46 @@ namespace IFiV2.Api.Domain.Services
     {
         public async Task<IReadOnlyList<StockDataPoint>> GetStockDataPointsAsync(string[] symbolsWithExchange, Interval interval, DateTimeOffset from, DateTimeOffset to)
         {
-            Dictionary<string, List<Dto.StockDataPoint>> stockDataPointDtos = new ();
-            foreach (var symbol in symbolsWithExchange)
-                stockDataPointDtos.Add(symbol, new List<Dto.StockDataPoint>());
+            List<StockDataPoint> stockDataPoints = new List<StockDataPoint>();
             foreach (var symbol in symbolsWithExchange)
             {
                 if (interval >= Interval._1d) //eod
                 {
                     var stockDataPointsFromApi = await _eodHdService.GetEodAsync(symbol, DateOnly.FromDateTime(from.UtcDateTime), DateOnly.FromDateTime(to.UtcDateTime));
-                    stockDataPointDtos[symbol].AddRange(stockDataPointsFromApi);
+                    stockDataPoints.AddRange(GetStockDataPointsFromDtos(symbol, interval, stockDataPointsFromApi));
                 }
                 else //intraday
                 {
                     if (interval == Interval._15m) //only 1m, 5m and 1h are available in eodhd intraday API
                         interval = Interval._5m;
                     var stockDataPointsFromApi = await _eodHdService.GetIntradayAsync(symbol, interval.ToString().Substring(1), from.ToUnixTimeSeconds(), to.ToUnixTimeSeconds());
-                    stockDataPointDtos[symbol].AddRange(stockDataPointsFromApi);
+                    stockDataPoints.AddRange(GetStockDataPointsFromDtos(symbol, interval, stockDataPointsFromApi));
                 }
             }
-            List<StockDataPoint> stockDataPoints = new List<StockDataPoint>(stockDataPointDtos.Sum(x => x.Value.Count));
-            foreach (var symbol in symbolsWithExchange)
+            return stockDataPoints;
+        }
+
+        private static IReadOnlyList<StockDataPoint> GetStockDataPointsFromDtos(string symbolWithExchange, Interval interval, IReadOnlyList<Dto.StockDataPoint> stockDataPointDtos)
+        {
+            List<StockDataPoint> stockDataPoints = new List<StockDataPoint>(stockDataPointDtos.Count);
+            var orderedDataPoints = stockDataPointDtos.OrderByDescending(x => x.UtcDate).ToList();
+            int i = 0;
+            foreach (var dataPoint in orderedDataPoints)
             {
-                var orderedDataPoints = stockDataPointDtos[symbol].OrderByDescending(x => x.UtcDate).ToList();
-                int i = 0;
-                foreach (var dataPoint in orderedDataPoints)
+                stockDataPoints.Add(new StockDataPoint
                 {
-                    stockDataPoints.Add(new StockDataPoint
-                    {
-                        SymbolWithExchange = symbol,
-                        Timestamp = new DateTimeOffset(dataPoint.UtcDate, new TimeSpan(0)),
-                        //openeng price is not always available, so we use the last close price
-                        Open = dataPoint.Open ?? FindLastAvailableValue(orderedDataPoints, i + 1, x => x.Close),
-                        High = dataPoint.High ?? FindLastAvailableValue(orderedDataPoints, i + 1, x => x.Close),
-                        Low = dataPoint.Low ?? FindLastAvailableValue(orderedDataPoints, i + 1, x => x.Close),
-                        Close = dataPoint.Close ?? FindLastAvailableValue(orderedDataPoints, i + 1, x => x.Close),
-                        Adjusted_close = dataPoint.Adjusted_close,
-                        Volume = dataPoint.Volume ?? 0,
-                    });
-                    ++i;
-                }
+                    SymbolWithExchange = symbolWithExchange,
+                    Interval = interval,
+                    Timestamp = new DateTimeOffset(dataPoint.UtcDate, new TimeSpan(0)),
+                    //opening price is not always available, so we use the last close price
+                    Open = dataPoint.Open ?? FindLastAvailableValue(orderedDataPoints, i + 1, x => x.Close),
+                    High = dataPoint.High ?? FindLastAvailableValue(orderedDataPoints, i + 1, x => x.Close),
+                    Low = dataPoint.Low ?? FindLastAvailableValue(orderedDataPoints, i + 1, x => x.Close),
+                    Close = dataPoint.Close ?? FindLastAvailableValue(orderedDataPoints, i + 1, x => x.Close),
+                    Adjusted_close = dataPoint.Adjusted_close,
+                    Volume = dataPoint.Volume ?? 0,
+                });
+                ++i;
             }
             return stockDataPoints;
         }

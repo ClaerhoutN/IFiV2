@@ -20,6 +20,8 @@ namespace IFiV2.Models
             Type = stock.Type;
             Country = stock.Country;
             Isin = stock.Isin;
+            
+            Interval = stockDataPoint.Interval;
 
             Timestamp = stockDataPoint.Timestamp;
             Open = stockDataPoint.Open;
@@ -30,6 +32,7 @@ namespace IFiV2.Models
             Volume = stockDataPoint.Volume;
         }
         public DateTimeOffset Timestamp { get; set; }
+        public Interval Interval { get; set; }
         public decimal Open { get; set; }
         public decimal Close { get; set; }
         public decimal? Adjusted_close { get; set; }

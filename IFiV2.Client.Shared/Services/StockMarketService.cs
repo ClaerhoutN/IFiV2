@@ -67,7 +67,7 @@ namespace IFiV2.Client.Shared.Services
             (Interval, DateTimeOffset, DateTimeOffset)[] intervals = [
                 (Interval._1d, DateTimeOffset.Now.AddDays(-390), DateTimeOffset.Now), //added 10 addition days to ensure we have enough data for 1 year change calculation (e.g. the last close was a few days ago due to holidays)
                 (Interval._1h, DateTimeOffset.Now.AddDays(-7), DateTimeOffset.Now),
-                (Interval._15m, DateTimeOffset.Now.AddDays(-1), DateTimeOffset.Now)
+                (Interval._5m, DateTimeOffset.Now.AddDays(-1), DateTimeOffset.Now)
                 ];
             foreach(var (interval, from, to) in intervals)
             {
