@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging;
 using MudBlazor.Services;
 using Refit;
 using System.Reflection;
+using System.Text.Json;
 using System.Text.RegularExpressions;
 
 namespace IFiV2.Client.Maui
@@ -36,7 +37,13 @@ namespace IFiV2.Client.Maui
             builder.Services.AddSingleton<IStockMarketService, StockMarketService>();
             builder.Services.AddSingleton<IFiV2.Client.Shared.Services.Interfaces.IStockFileService, StockFileService>();
 
-            var clientBuilder = builder.Services.AddRefitClient<Shared.ApiServices.IStockMarketService>()
+            var clientBuilder = builder.Services.AddRefitClient<Shared.ApiServices.IStockMarketService>(
+                new RefitSettings(new SystemTextJsonContentSerializer(new System.Text.Json.JsonSerializerOptions
+                {
+                    RespectNullableAnnotations = true,
+                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                    PropertyNameCaseInsensitive = true
+                })))
                 .ConfigureHttpClient(c => c.BaseAddress = new Uri(builder.Configuration["StockMarketApi:Url"]));
 #if DEBUG
             if (Regex.IsMatch(builder.Configuration["StockMarketApi:Url"], "https:\\/\\/localhost:\\d+.+"))

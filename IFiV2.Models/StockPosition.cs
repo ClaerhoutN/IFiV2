@@ -11,7 +11,7 @@ namespace IFiV2.Models
             get => _historicalData;
             set
             {
-                _historicalData = value.OrderByDescending(x => x.Timestamp).ToList();
+                _historicalData = value.OrderByDescending(x => x.Timestamp).ToList(); //todo: is ordering really necessary?
                 RecalculateProperties();
             }
         }

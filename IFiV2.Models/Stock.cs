@@ -43,8 +43,8 @@ namespace IFiV2.Models
             set => _currency = value;
         }
 
-        private string _isin;
-        public virtual string Isin
+        private string? _isin;
+        public virtual string? Isin
         {
             get => _isin;
             set => _isin = value;
