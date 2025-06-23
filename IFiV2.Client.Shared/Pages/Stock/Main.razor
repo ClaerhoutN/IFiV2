@@ -12,7 +12,12 @@
             </CellTemplate>
         </PropertyColumn>
         <PropertyColumn Property="@(x => x.LatestDataPoint.Close)" Title="Value" />
-        <PropertyColumn Property="@(x => x._24HChange)" Title="24H change" Format="P" />
+        <PropertyColumn Property="@(x => x._1DChange)" Title="24H change" Format="P" />
+        <TemplateColumn>
+            <CellTemplate>
+                <Chart Height="200px" Width="300px" ShowTickLabels=false DataPoints="@(context.Item.HistoricalData.Where(x => x.Timestamp >= context.Item.LatestDataPoint.Timestamp.AddDays(-7)).ToList())" />
+            </CellTemplate>
+        </TemplateColumn>
     </Columns>
 </MudDataGrid>
 

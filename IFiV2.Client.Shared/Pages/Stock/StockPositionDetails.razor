@@ -24,6 +24,13 @@ else if (_stockPosition != null)
             <MudTextField ReadOnly="true" Value="@_stockPosition.LatestDataPoint.Country" Label="Country" />
             <MudTextField ReadOnly="true" Value="@_stockPosition.LatestDataPoint.Currency" Label="Currency" />
             <MudTextField ReadOnly="true" Value="@_stockPosition.LatestDataPoint.Isin" Label="ISIN" />
+
+            <MudTextField ReadOnly="true" Value="@_stockPosition._1DChange" Label="24H Change" Format="P" />
+            <MudTextField ReadOnly="true" Value="@_stockPosition._7DChange" Label="7D Change" Format="P" />
+            <MudTextField ReadOnly="true" Value="@_stockPosition._30DChange" Label="30D Change" Format="P" />
+            <MudTextField ReadOnly="true" Value="@_stockPosition._1YChange" Label="1Y Change" Format="P" />
+
+            <Chart ShowTickLabels=true Height="400px" Width="100%" DataPoints="@(_stockPosition.HistoricalData.Where(x => x.Timestamp >= _stockPosition.LatestDataPoint.Timestamp.AddDays(-7)).ToList())" />
         </MudCardContent>
         <MudCardActions>
             <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="RemoveStockPositionAsync">Remove</MudButton>

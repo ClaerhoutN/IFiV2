@@ -45,8 +45,8 @@ namespace IFiV2.Client.Maui.Services
                 {
                     return new StockPosition
                     {
-                        HistoricalData = new List<StockDataPoint>(), 
-                        Stock = stock
+                        Stock = stock,
+                        HistoricalData = new List<StockDataPoint>()
                     };
                 }
                 return new StockPosition
