@@ -14,7 +14,7 @@ namespace IFiV2.Api.Domain.Dto
         public string Type { get; set; }
         public string Country { get; set; }
         public string Currency { get; set; }        
-        public string Isin { get; set; }
+        public string? Isin { get; set; }
         public decimal PreviousClose { get; set; }
         public DateOnly PreviousCloseDate { get; set; }
     }

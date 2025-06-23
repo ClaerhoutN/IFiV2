@@ -16,19 +16,41 @@ namespace IFiV2.Api.Domain.Services
             List<StockDataPoint> stockDataPoints = new List<StockDataPoint>();
             foreach (var symbol in symbolsWithExchange)
             {
-                var stockDataPointsFromApi = (await _eodHdService.GetEodAsync(symbol, DateOnly.FromDateTime(from.Date), DateOnly.FromDateTime(to.Date)))
-                    .Select(x => new StockDataPoint
-                    {
-                        SymbolWithExchange = symbol,
-                        Timestamp = x.Date,
-                        Open = x.Open,
-                        High = x.High,
-                        Low = x.Low,
-                        Close = x.Close,
-                        Adjusted_close = x.Adjusted_close,
-                        Volume = x.Volume
-                    });
-                stockDataPoints.AddRange(stockDataPointsFromApi);
+                if (interval >= Interval._1d) //eod
+                {
+                    var stockDataPointsFromApi = (await _eodHdService.GetEodAsync(symbol, DateOnly.FromDateTime(from.Date), DateOnly.FromDateTime(to.Date)))
+                        .Select(x => new StockDataPoint
+                        {
+                            SymbolWithExchange = symbol,
+                            Timestamp = new DateTimeOffset(x.UtcDate, new TimeSpan(0)),
+                            Open = x.Open,
+                            High = x.High,
+                            Low = x.Low,
+                            Close = x.Close,
+                            Adjusted_close = x.Adjusted_close,
+                            Volume = x.Volume
+                        });
+                    stockDataPoints.AddRange(stockDataPointsFromApi);
+                }
+                else //intraday
+                {
+                    if (interval == Interval._15m) //only 1m, 5m and 1h are available in eodhd intraday API
+                        interval = Interval._5m;
+                    var stockDataPointsFromApi = (await _eodHdService.GetIntradayAsync(symbol, interval.ToString().Substring(1), from.ToUnixTimeSeconds(), to.ToUnixTimeSeconds()))
+                        
+                        .Select(x => new StockDataPoint
+                        {
+                            SymbolWithExchange = symbol,
+                            Timestamp = new DateTimeOffset(x.UtcDate, new TimeSpan(0)),
+                            Open = x.Open,
+                            High = x.High,
+                            Low = x.Low,
+                            Close = x.Close,
+                            Adjusted_close = x.Adjusted_close,
+                            Volume = x.Volume
+                        });
+                    stockDataPoints.AddRange(stockDataPointsFromApi);
+                }
             }
             return stockDataPoints;
         }

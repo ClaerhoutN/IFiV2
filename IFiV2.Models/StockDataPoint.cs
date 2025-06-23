@@ -32,10 +32,10 @@ namespace IFiV2.Models
         public DateTimeOffset Timestamp { get; set; }
         public decimal Open { get; set; }
         public decimal Close { get; set; }
-        public decimal Adjusted_close { get; set; }
+        public decimal? Adjusted_close { get; set; }
         public decimal High { get; set; }
         public decimal Low { get; set; }
-        public double Volume { get; set; }
+        public double? Volume { get; set; }
 
         #region override properties from base class to prevent them from being serialized
         //[JsonIgnore]

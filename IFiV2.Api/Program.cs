@@ -3,6 +3,7 @@ using IFiV2.Api.Domain.Services.Interfaces;
 using IFiV2.Common.Http;
 using IFiV2.Models;
 using Refit;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 
@@ -15,12 +16,18 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddTransient<IStockMarketService, StockMarketService>();
 
-builder.Services.AddRefitClient<IFiV2.Api.Domain.ApiServices.IEodHdService>()
-                .ConfigureHttpClient(c =>
-                {
-                    c.BaseAddress = new Uri(builder.Configuration["EodHdApi:Url"]);
-                })
-                .AddHttpMessageHandler(() => new AddQueryStringArgumentHandler("api_token", builder.Configuration["EodHdApi:ApiToken"]));
+builder.Services.AddRefitClient<IFiV2.Api.Domain.ApiServices.IEodHdService>(
+            new RefitSettings(new SystemTextJsonContentSerializer(new System.Text.Json.JsonSerializerOptions
+            {
+                RespectNullableAnnotations = true,
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                PropertyNameCaseInsensitive = true
+            })))
+            .ConfigureHttpClient(c =>
+            {
+                c.BaseAddress = new Uri(builder.Configuration["EodHdApi:Url"]);
+            })
+            .AddHttpMessageHandler(() => new AddQueryStringArgumentHandler("api_token", builder.Configuration["EodHdApi:ApiToken"]));
 
 var app = builder.Build();
 
