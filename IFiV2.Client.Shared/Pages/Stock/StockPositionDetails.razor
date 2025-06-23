@@ -30,7 +30,7 @@ else if (_stockPosition != null)
             <MudTextField ReadOnly="true" Value="@_stockPosition._30DChange" Label="30D Change" Format="P" />
             <MudTextField ReadOnly="true" Value="@_stockPosition._1YChange" Label="1Y Change" Format="P" />
 
-            <Chart ShowTickLabels=true Height="400px" Width="100%" GetDataPoints="@(() => _stockPosition.DayDatapoints)" />
+            <Chart ShowTickLabels=true Height="400px" Width="100vw" GetDataPoints="@(() => _stockPosition.DayDatapoints)" />
         </MudCardContent>
         <MudCardActions>
             <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="RemoveStockPositionAsync">Remove</MudButton>

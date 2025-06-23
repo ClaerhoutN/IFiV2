@@ -17,6 +17,7 @@
     private Layout _chartLayout;
     private IList<ITrace> _chartData;
     private Scatter _chartScatter = new();
+    private Candlestick _chartCandlestick = new();
 
     protected override async Task OnInitializedAsync()
     {
@@ -30,14 +31,18 @@
             XAxis = [new Plotly.Blazor.LayoutLib.XAxis
             {
                 ShowTickLabels = ShowTickLabels, 
-                FixedRange = true
+                FixedRange = true, 
+                RangeSlider = new Plotly.Blazor.LayoutLib.XAxisLib.RangeSlider {
+                    Visible = false
+                }
             }],
             YAxis = [new Plotly.Blazor.LayoutLib.YAxis
             {
                 ShowTickLabels = ShowTickLabels, 
                 FixedRange = true
             }],
-            HoverMode = Plotly.Blazor.LayoutLib.HoverModeEnum.False
+            HoverMode = Plotly.Blazor.LayoutLib.HoverModeEnum.False, 
+            ShowLegend = false
         };
         if (!ShowTickLabels)
         {
@@ -50,6 +55,20 @@
                 Pad = 0 // Padding
             };
         }
+        _chartCandlestick.Increasing = new Plotly.Blazor.Traces.CandlestickLib.Increasing
+        {
+            Line = new Plotly.Blazor.Traces.CandlestickLib.IncreasingLib.Line
+            {
+                Color = "green"
+            }
+        };
+        _chartCandlestick.Decreasing = new Plotly.Blazor.Traces.CandlestickLib.Decreasing
+        {
+            Line = new Plotly.Blazor.Traces.CandlestickLib.DecreasingLib.Line
+            {
+                Color = "red"
+            }
+        };
         _chartScatter.Line = new Plotly.Blazor.Traces.ScatterLib.Line
         {
             Color = "black",
@@ -57,6 +76,7 @@
         };
         _chartData = new List<ITrace>()
         {
+            _chartCandlestick,
             _chartScatter
         };
         await UpdateChartAsync();
@@ -67,6 +87,14 @@
         var dp = GetDataPoints();
         _chartScatter.Y = dp.Select(x => (object)x.Close).ToList();
         _chartScatter.X = dp.Select(x => (object)x.Timestamp).ToList();
+
+        _chartCandlestick.Open = dp.Select(x => (object)x.Open).ToList();
+        _chartCandlestick.Close = dp.Select(x => (object)x.Close).ToList();
+        _chartCandlestick.High = dp.Select(x => (object)x.High).ToList();
+        _chartCandlestick.Low = dp.Select(x => (object)x.Low).ToList();
+        _chartCandlestick.X = dp.Select(x => (object)x.Timestamp).ToList();
+
+
         if (_chart != null)
             await _chart.React();       
     }

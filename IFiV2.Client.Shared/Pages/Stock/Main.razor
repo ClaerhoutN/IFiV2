@@ -15,7 +15,7 @@
         <PropertyColumn Property="@(x => x._1DChange)" Title="24H change" Format="P" />
         <TemplateColumn>
             <CellTemplate>
-                <Chart Height="200px" Width="300px" ShowTickLabels=false GetDataPoints="@(() => context.Item.DayDatapoints)" @ref=_chart />
+                <Chart Height="200px" Width="250px" ShowTickLabels=false GetDataPoints="@(() => context.Item.DayDatapoints)" @ref=_chart />
             </CellTemplate>
         </TemplateColumn>
     </Columns>
