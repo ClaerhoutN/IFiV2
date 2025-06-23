@@ -9,7 +9,7 @@
     [Parameter]
     public required string Width { get; set; }
     [Parameter]
-    public required IReadOnlyList<StockDataPoint> DataPoints { get; set; }
+    public required Func<IReadOnlyList<StockDataPoint>> GetDataPoints { get; set; }
     [Parameter]
     public bool ShowTickLabels { get; set; }
     private Config _chartConfig;
@@ -18,14 +18,13 @@
     private IList<ITrace> _chartData;
     private Scatter _chartScatter = new();
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
         _chartConfig = new Config
         {
             DisplayModeBar = Plotly.Blazor.ConfigLib.DisplayModeBarEnum.False,
-            
-        };
 
+        };
         _chartLayout = new Layout
         {
             XAxis = [new Plotly.Blazor.LayoutLib.XAxis
@@ -38,6 +37,7 @@
                 ShowTickLabels = ShowTickLabels, 
                 FixedRange = true
             }],
+            HoverMode = Plotly.Blazor.LayoutLib.HoverModeEnum.False
         };
         if (!ShowTickLabels)
         {
@@ -50,17 +50,24 @@
                 Pad = 0 // Padding
             };
         }
-
-        _chartData = new List<ITrace>
-        {
-            _chartScatter
-        };
         _chartScatter.Line = new Plotly.Blazor.Traces.ScatterLib.Line
         {
             Color = "black",
             Shape = Plotly.Blazor.Traces.ScatterLib.LineLib.ShapeEnum.Linear,
         };
-        _chartScatter.Y = DataPoints.Select(x => (object)x.Close).ToList();
-        _chartScatter.X = DataPoints.Select(x => (object)x.Timestamp).ToList();
+        _chartData = new List<ITrace>()
+        {
+            _chartScatter
+        };
+        await UpdateChartAsync();
+    }
+
+    public async Task UpdateChartAsync()
+    {       
+        var dp = GetDataPoints();
+        _chartScatter.Y = dp.Select(x => (object)x.Close).ToList();
+        _chartScatter.X = dp.Select(x => (object)x.Timestamp).ToList();
+        if (_chart != null)
+            await _chart.React();       
     }
 }

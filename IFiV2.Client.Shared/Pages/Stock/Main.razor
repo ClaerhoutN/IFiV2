@@ -15,7 +15,7 @@
         <PropertyColumn Property="@(x => x._1DChange)" Title="24H change" Format="P" />
         <TemplateColumn>
             <CellTemplate>
-                <Chart Height="200px" Width="300px" ShowTickLabels=false DataPoints="@(context.Item.DayDatapoints)" />
+                <Chart Height="200px" Width="300px" ShowTickLabels=false GetDataPoints="@(() => context.Item.DayDatapoints)" @ref=_chart />
             </CellTemplate>
         </TemplateColumn>
     </Columns>
@@ -26,6 +26,7 @@
     private IStockMarketService _stockMarketService { get; set; }
     [Inject]
     private NavigationManager _navigationManager { get; set; }
+    private Chart _chart;
     private IReadOnlyList<StockPosition> _stockPositions = new List<StockPosition>();
     private bool _isLoading = true;
     private static bool _isFirstLoad = true;
@@ -41,6 +42,10 @@
         {
             _stockPositions = await _stockMarketService.GetStockPositionsAsync(_isFirstLoad, refreshDataPoints);
             _isFirstLoad = false;
+            if(_chart != null)
+            {
+                await _chart.UpdateChartAsync();
+            }
         }
         catch
         {
