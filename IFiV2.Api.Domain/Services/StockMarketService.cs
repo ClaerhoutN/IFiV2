@@ -18,7 +18,7 @@ namespace IFiV2.Api.Domain.Services
             {
                 if (interval >= Interval._1d) //eod
                 {
-                    var stockDataPointsFromApi = (await _eodHdService.GetEodAsync(symbol, DateOnly.FromDateTime(from.Date), DateOnly.FromDateTime(to.Date)))
+                    var stockDataPointsFromApi = (await _eodHdService.GetEodAsync(symbol, DateOnly.FromDateTime(from.UtcDateTime), DateOnly.FromDateTime(to.UtcDateTime)))
                         .Select(x => new StockDataPoint
                         {
                             SymbolWithExchange = symbol,
