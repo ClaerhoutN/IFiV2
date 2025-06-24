@@ -13,13 +13,6 @@ else if (_stockPosition != null)
             <MudText Typo="Typo.subtitle1">@_stockPosition.Stock.Name</MudText>
         </MudCardHeader>
         <MudCardContent>
-            @* <MudTextField ReadOnly="true" Value="@_stockPosition.LatestDataPoint.Timestamp" Label="Timestamp" />
-            <MudTextField ReadOnly="true" Value="@_stockPosition.LatestDataPoint.Open" Label="Open" />
-            <MudTextField ReadOnly="true" Value="@_stockPosition.LatestDataPoint.Close" Label="Close" />
-            <MudTextField ReadOnly="true" Value="@_stockPosition.LatestDataPoint.Adjusted_close" Label="Adjusted Close" />
-            <MudTextField ReadOnly="true" Value="@_stockPosition.LatestDataPoint.High" Label="High" />
-            <MudTextField ReadOnly="true" Value="@_stockPosition.LatestDataPoint.Low" Label="Low" />
-            <MudTextField ReadOnly="true" Value="@_stockPosition.LatestDataPoint.Volume" Label="Volume" /> *@
             <MudTextField ReadOnly="true" Value="@_stockPosition.Stock.Type" Label="Type" />
             <MudTextField ReadOnly="true" Value="@_stockPosition.Stock.Country" Label="Country" />
             <MudTextField ReadOnly="true" Value="@_stockPosition.Stock.Currency" Label="Currency" />
@@ -29,8 +22,20 @@ else if (_stockPosition != null)
             <MudTextField ReadOnly="true" Value="@_stockPosition._7DChange" Label="7D Change" Format="P" />
             <MudTextField ReadOnly="true" Value="@_stockPosition._30DChange" Label="30D Change" Format="P" />
             <MudTextField ReadOnly="true" Value="@_stockPosition._1YChange" Label="1Y Change" Format="P" />
-
-            <Chart ShowTickLabels=true Height="400px" Width="100vw" GetDataPoints="@(() => _stockPosition.DayDatapoints)" />
+            <MudTabs>
+                <MudTabPanel Text="1 D">
+                    <Chart ShowTickLabels=true Height="400px" Width="100vw" GetDataPoints="@(() => _stockPosition.DayDatapoints)" />
+                </MudTabPanel>
+                <MudTabPanel Text="7 D">
+                    <Chart ShowTickLabels=true Height="400px" Width="100vw" GetDataPoints="@(() => _stockPosition.WeekDatapoints)" />
+                </MudTabPanel>
+                <MudTabPanel Text="1 M">
+                    <Chart ShowTickLabels=true Height="400px" Width="100vw" GetDataPoints="@(() => _stockPosition.MonthDatapoints)" />
+                </MudTabPanel>
+                <MudTabPanel Text="1 Y">
+                    <Chart ShowTickLabels=true Height="400px" Width="100vw" GetDataPoints="@(() => _stockPosition.YearDatapoints)" />
+                </MudTabPanel>
+            </MudTabs>
         </MudCardContent>
         <MudCardActions>
             <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="RemoveStockPositionAsync">Remove</MudButton>
