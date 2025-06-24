@@ -18,10 +18,10 @@ else if (_stockPosition != null)
             <MudTextField ReadOnly="true" Value="@_stockPosition.Stock.Currency" Label="Currency" />
             <MudTextField ReadOnly="true" Value="@_stockPosition.Stock.Isin" Label="ISIN" />
 
-            <MudTextField ReadOnly="true" Value="@_stockPosition._1DChange" Label="24H Change" Format="P" />
-            <MudTextField ReadOnly="true" Value="@_stockPosition._7DChange" Label="7D Change" Format="P" />
-            <MudTextField ReadOnly="true" Value="@_stockPosition._30DChange" Label="30D Change" Format="P" />
-            <MudTextField ReadOnly="true" Value="@_stockPosition._1YChange" Label="1Y Change" Format="P" />
+            <MudTextField ReadOnly="true" Style="@CellStyleFunc(_stockPosition._1DChange)" Value="@_stockPosition._1DChange" Label="24H Change" Format="P" />
+            <MudTextField ReadOnly="true" Style="@CellStyleFunc(_stockPosition._7DChange)"  Value="@_stockPosition._7DChange" Label="7D Change" Format="P" />
+            <MudTextField ReadOnly="true" Style="@CellStyleFunc(_stockPosition._30DChange)"  Value="@_stockPosition._30DChange" Label="30D Change" Format="P" />
+            <MudTextField ReadOnly="true" Style="@CellStyleFunc(_stockPosition._1YChange)"  Value="@_stockPosition._1YChange" Label="1Y Change" Format="P" />
             <MudTabs>
                 <MudTabPanel Text="1 D">
                     <Chart ShowTickLabels=true Height="400px" Width="100vw" GetDataPoints="@(() => _stockPosition.DayDatapoints)" />
@@ -83,5 +83,18 @@ else if (_stockPosition != null)
             //todo: log and inform user
             _isLoading = false;
         }
+    }
+
+    private static string CellStyleFunc(float change)
+    {
+        if (change > 0)
+        {
+            return "color: green";
+        }
+        else if (change < 0)
+        {
+            return "color: red";
+        }
+        return string.Empty;
     }
 }

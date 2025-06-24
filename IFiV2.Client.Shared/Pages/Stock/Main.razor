@@ -12,7 +12,7 @@
             </CellTemplate>
         </PropertyColumn>
         <PropertyColumn Property="@(x => x.DayDatapoints.Count == 0 ? 0M : x.DayDatapoints[x.DayDatapoints.Count - 1].Close)" Title="Value" />
-        <PropertyColumn Property="@(x => x._1DChange)" Title="24H change" Format="P" />
+        <PropertyColumn T=StockPosition TProperty="float" Property="@(x => x._1DChange)" CellStyleFunc="CellStyleFunc" Title="24H change" Format="P" />
         <TemplateColumn>
             <CellTemplate>
                 <Chart Height="200px" Width="250px" ShowTickLabels=false GetDataPoints="@(() => context.Item.DayDatapoints)" @ref=_chart />
@@ -55,5 +55,18 @@
         {
             _isLoading = false;
         }
+    }
+
+    private static string CellStyleFunc(StockPosition stockPosition)
+    {
+        if (stockPosition._1DChange > 0)
+        {
+            return "color: green";
+        }
+        else if (stockPosition._1DChange < 0)
+        {
+            return "color: red";
+        }
+        return string.Empty;
     }
 }

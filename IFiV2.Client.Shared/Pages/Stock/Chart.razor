@@ -100,40 +100,19 @@
         _rangeBreaks.Clear();
         if(dp.Count != 0)
         {
-            var min = dp[0];
-            var current = min;
-            TimeSpan diffToCheck;
-            switch(min.Interval)
-            {
-                case Interval._1m:
-                    diffToCheck = TimeSpan.FromMinutes(1);
-                    break;
-                case Interval._5m:
-                    diffToCheck = TimeSpan.FromMinutes(5);
-                    break;
-                case Interval._15m:
-                    diffToCheck = TimeSpan.FromMinutes(15);
-                    break;
-                case Interval._1h:
-                    diffToCheck = TimeSpan.FromHours(1); // Default to daily if not specified
-                    break;
-                case Interval._1d:
-                    diffToCheck = TimeSpan.FromDays(1);
-                    break;
-                default:
-                    throw new NotImplementedException();
-            }
+            var previous = dp[0];
+            TimeSpan diffToCheck = previous.Interval.ToTimeSpan();
             for(int i = 1; i < dp.Count; ++i)
             {
-                current = dp[i];
-                if ((current.Timestamp - min.Timestamp) > diffToCheck)
+                var current = dp[i];
+                if ((current.Timestamp - previous.Timestamp) > diffToCheck)
                 {
                     _rangeBreaks.Add(new RangeBreak
                     {
-                        Bounds = [min.Timestamp, current.Timestamp], 
+                        Bounds = [previous.Timestamp, current.Timestamp], 
                     });
                 }
-                min = current;
+                previous = current;
             }
         }
 
