@@ -44,7 +44,7 @@
                 ShowTickLabels = ShowTickLabels, 
                 FixedRange = true
             }],
-            //HoverMode = Plotly.Blazor.LayoutLib.HoverModeEnum.False, 
+            HoverMode = Plotly.Blazor.LayoutLib.HoverModeEnum.False, 
             ShowLegend = false
         };
         if (!ShowTickLabels)
@@ -131,7 +131,6 @@
                     _rangeBreaks.Add(new RangeBreak
                     {
                         Bounds = [min.Timestamp, current.Timestamp], 
-                        //DValue = (decimal)diffToCheck.TotalMilliseconds
                     });
                 }
                 min = current;
