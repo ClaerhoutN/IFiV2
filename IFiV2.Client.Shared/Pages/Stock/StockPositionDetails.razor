@@ -21,18 +21,47 @@ else if (_stockPosition != null)
             <MudTextField ReadOnly="true" Style="@CellStyleFunc(_stockPosition._1DChange)" Value="@_stockPosition._1DChange" Label="24H Change" Format="P" />
             <MudTextField ReadOnly="true" Style="@CellStyleFunc(_stockPosition._7DChange)"  Value="@_stockPosition._7DChange" Label="7D Change" Format="P" />
             <MudTextField ReadOnly="true" Style="@CellStyleFunc(_stockPosition._30DChange)"  Value="@_stockPosition._30DChange" Label="30D Change" Format="P" />
+            <MudTextField ReadOnly="true" Style="@CellStyleFunc(_stockPosition._30DChange)" Value="@_stockPosition._90DChange" Label="90D Change" Format="P" />
             <MudTextField ReadOnly="true" Style="@CellStyleFunc(_stockPosition._1YChange)"  Value="@_stockPosition._1YChange" Label="1Y Change" Format="P" />
             <MudTabs>
                 <MudTabPanel Text="1 D">
+                    <MudTextField ReadOnly="true" Value="@_stockPosition._1DOpen" Label="Open" />
+                    <MudTextField ReadOnly="true" Value="@_stockPosition._1DClose" Label="Close" />
+                    <MudTextField ReadOnly="true" Value="@_stockPosition._1DHigh" Label="High" />
+                    <MudTextField ReadOnly="true" Value="@_stockPosition._1DLow" Label="Low" />
+                    <MudTextField ReadOnly="true" Value="@_stockPosition._1DVolume" Label="Volume" />
                     <Chart ShowTickLabels=true Height="400px" Width="100vw" GetDataPoints="@(() => _stockPosition.DayDatapoints)" />
                 </MudTabPanel>
                 <MudTabPanel Text="7 D">
+                    <MudTextField ReadOnly="true" Value="@_stockPosition._7DOpen" Label="Open" />
+                    <MudTextField ReadOnly="true" Value="@_stockPosition._7DClose" Label="Close" />
+                    <MudTextField ReadOnly="true" Value="@_stockPosition._7DHigh" Label="High" />
+                    <MudTextField ReadOnly="true" Value="@_stockPosition._7DLow" Label="Low" />
+                    <MudTextField ReadOnly="true" Value="@_stockPosition._7DVolume" Label="Volume" />
                     <Chart ShowTickLabels=true Height="400px" Width="100vw" GetDataPoints="@(() => _stockPosition.WeekDatapoints)" />
                 </MudTabPanel>
                 <MudTabPanel Text="1 M">
+                    <MudTextField ReadOnly="true" Value="@_stockPosition._30DOpen" Label="Open" />
+                    <MudTextField ReadOnly="true" Value="@_stockPosition._30DClose" Label="Close" />
+                    <MudTextField ReadOnly="true" Value="@_stockPosition._30DHigh" Label="High" />
+                    <MudTextField ReadOnly="true" Value="@_stockPosition._30DLow" Label="Low" />
+                    <MudTextField ReadOnly="true" Value="@_stockPosition._30DVolume" Label="Volume" />
                     <Chart ShowTickLabels=true Height="400px" Width="100vw" GetDataPoints="@(() => _stockPosition.MonthDatapoints)" />
                 </MudTabPanel>
+                <MudTabPanel Text="3 M">
+                    <MudTextField ReadOnly="true" Value="@_stockPosition._90DOpen" Label="Open" />
+                    <MudTextField ReadOnly="true" Value="@_stockPosition._90DClose" Label="Close" />
+                    <MudTextField ReadOnly="true" Value="@_stockPosition._90DHigh" Label="High" />
+                    <MudTextField ReadOnly="true" Value="@_stockPosition._90DLow" Label="Low" />
+                    <MudTextField ReadOnly="true" Value="@_stockPosition._90DVolume" Label="Volume" />
+                    <Chart ShowTickLabels=true Height="400px" Width="100vw" GetDataPoints="@(() => _stockPosition.QuarterDatapoints)" />
+                </MudTabPanel>
                 <MudTabPanel Text="1 Y">
+                    <MudTextField ReadOnly="true" Value="@_stockPosition._1YOpen" Label="Open" />
+                    <MudTextField ReadOnly="true" Value="@_stockPosition._1YClose" Label="Close" />
+                    <MudTextField ReadOnly="true" Value="@_stockPosition._1YHigh" Label="High" />
+                    <MudTextField ReadOnly="true" Value="@_stockPosition._1YLow" Label="Low" />
+                    <MudTextField ReadOnly="true" Value="@_stockPosition._1YVolume" Label="Volume" />
                     <Chart ShowTickLabels=true Height="400px" Width="100vw" GetDataPoints="@(() => _stockPosition.YearDatapoints)" />
                 </MudTabPanel>
             </MudTabs>
