@@ -72,46 +72,46 @@ namespace IFiV2.Api.Domain.Dto
         }
         public class _HighLights
         {
-            public decimal BookValue { get; set; }
-            public decimal DilutedEpsTTM { get; set; }
-            public decimal DividendShare { get; set; }
-            public decimal DividendYield { get; set; }
-            public decimal EarningsShare { get; set; }
+            public decimal? BookValue { get; set; }
+            public decimal? DilutedEpsTTM { get; set; }
+            public decimal? DividendShare { get; set; }
+            public decimal? DividendYield { get; set; }
+            public decimal? EarningsShare { get; set; }
             public long EBITDA { get; set; }
-            public decimal EPSEstimateCurrentQuarter { get; set; }
-            public decimal EPSEstimateCurrentYear { get; set; }
-            public decimal EPSEstimateNextQuarter { get; set; }
-            public decimal EPSEstimateNextYear { get; set; }
+            public decimal? EPSEstimateCurrentQuarter { get; set; }
+            public decimal? EPSEstimateCurrentYear { get; set; }
+            public decimal? EPSEstimateNextQuarter { get; set; }
+            public decimal? EPSEstimateNextYear { get; set; }
             public long GrossProfitTTM { get; set; }
             public long MarketCapitalization { get; set; }
-            public decimal MarketCapitalizationMln { get; set; }
+            public decimal? MarketCapitalizationMln { get; set; }
             public DateOnly MostRecentQuarter { get; set; }
-            public decimal OperatingMarginTTM { get; set; }
-            public decimal PEGRatio { get; set; }
-            public decimal PERatio { get; set; }
-            public decimal ProfitMargin { get; set; }
-            public decimal QuarterlyEarningsGrowthYOY { get; set; }
-            public decimal QuarterlyRevenueGrowthYOY { get; set; }
-            public decimal ReturnOnAssetsTTM { get; set; }
-            public decimal ReturnOnEquityTTM { get; set; }
-            public decimal RevenuePerShareTTM { get; set; }
+            public decimal? OperatingMarginTTM { get; set; }
+            public decimal? PEGRatio { get; set; }
+            public decimal? PERatio { get; set; }
+            public decimal? ProfitMargin { get; set; }
+            public decimal? QuarterlyEarningsGrowthYOY { get; set; }
+            public decimal? QuarterlyRevenueGrowthYOY { get; set; }
+            public decimal? ReturnOnAssetsTTM { get; set; }
+            public decimal? ReturnOnEquityTTM { get; set; }
+            public decimal? RevenuePerShareTTM { get; set; }
             public long RevenueTTM { get; set; }
-            public decimal WallStreetTargetPrice { get; set; }
+            public decimal? WallStreetTargetPrice { get; set; }
         }
         public class _Valuation
         {
             public long EnterpriseValue { get; set; }
-            public decimal EnterpriseValueEbitda { get; set; }
-            public decimal EnterpriseValueRevenue { get; set; }
-            public decimal ForwardPE { get; set; }
-            public decimal PriceBookMRQ { get; set; }
-            public decimal PriceSalesTTM { get; set; }
-            public decimal TrailingPE { get; set; }
+            public decimal? EnterpriseValueEbitda { get; set; }
+            public decimal? EnterpriseValueRevenue { get; set; }
+            public decimal? ForwardPE { get; set; }
+            public decimal? PriceBookMRQ { get; set; }
+            public decimal? PriceSalesTTM { get; set; }
+            public decimal? TrailingPE { get; set; }
         }
         public class _SharesStats
         {
-            public decimal PercentInsiders { get; set; }
-            public decimal PercentInstitutions { get; set; }
+            public decimal? PercentInsiders { get; set; }
+            public decimal? PercentInstitutions { get; set; }
             public long SharesFloat { get; set; }
             public long SharesOutstanding { get; set; }
             public long? SharesShort { get; set; }
@@ -122,26 +122,26 @@ namespace IFiV2.Api.Domain.Dto
         }
         public class _Technicals
         {
-            public decimal _200DayMA { get; set; }
-            public decimal _50DayMA { get; set; }
-            public decimal _52WeekHigh { get; set; }
-            public decimal _52WeekLow { get; set; }
-            public decimal Beta { get; set; }
+            public decimal? _200DayMA { get; set; }
+            public decimal? _50DayMA { get; set; }
+            public decimal? _52WeekHigh { get; set; }
+            public decimal? _52WeekLow { get; set; }
+            public decimal? Beta { get; set; }
             public long SharesShort { get; set; }
             public long SharesShortPriorMonth { get; set; }
-            public decimal ShortPercent { get; set; }
-            public decimal ShortRatio { get; set; }
+            public decimal? ShortPercent { get; set; }
+            public decimal? ShortRatio { get; set; }
         }
         public class _SplitsDividends
         {
             public DateOnly DividendDate { get; set; }
             public DateOnly ExDividendDate { get; set; }
-            public decimal ForwardAnnualDividendRate { get; set; }
-            public decimal ForwardAnnualDividendYield { get; set; }
+            public decimal? ForwardAnnualDividendRate { get; set; }
+            public decimal? ForwardAnnualDividendYield { get; set; }
             public DateOnly LastSplitDate { get; set; }
             public string? LastSplitFactor { get; set; }
             public Dictionary<string, NumberDividendsByYearEntry> NumberDividendsByYear { get; set; }
-            public decimal PayoutRatio { get; set; }
+            public decimal? PayoutRatio { get; set; }
 
             public class NumberDividendsByYearEntry
             {
@@ -153,11 +153,11 @@ namespace IFiV2.Api.Domain.Dto
         {
             public int Buy { get; set; }
             public int Hold { get; set; }
-            public decimal Rating { get; set; }
+            public decimal? Rating { get; set; }
             public int Sell { get; set; }
             public int StrongBuy { get; set; }
             public int StrongSell { get; set; }
-            public decimal TargetPrice { get; set; }
+            public decimal? TargetPrice { get; set; }
         }
         public class _Holders
         {
@@ -166,12 +166,12 @@ namespace IFiV2.Api.Domain.Dto
             public class HolderEntry
             {
                 public long change { get; set; }
-                public decimal change_p { get; set; }
+                public decimal? change_p { get; set; }
                 public long currentShares { get; set; }
                 public DateOnly date { get; set; }
                 public string? name { get; set; }
-                public decimal totalAssets { get; set; }
-                public decimal totalShares { get; set; }
+                public decimal? totalAssets { get; set; }
+                public decimal? totalShares { get; set; }
             }
         }
         public class _InsiderTransaction
@@ -185,7 +185,7 @@ namespace IFiV2.Api.Domain.Dto
             public long? transactionAmount { get; set; }
             public string? transactionCode { get; set; }
             public DateOnly transactionDate { get; set; }
-            public decimal transactionPrice { get; set; }
+            public decimal? transactionPrice { get; set; }
         }
         public class _OutstandingsShares
         {
@@ -209,7 +209,7 @@ namespace IFiV2.Api.Domain.Dto
             public class EarningsAnnualEntry
             {
                 public string? date { get; set; }
-                public decimal epsActual { get; set; }
+                public decimal? epsActual { get; set; }
             }
 
             public class EarningsHistoryEntry

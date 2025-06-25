@@ -16,7 +16,7 @@ else if (_stockPosition != null)
             <MudText Typo="Typo.subtitle1">@_stockPosition.Stock.Description</MudText>
             <MudTextField ReadOnly="true" Value="@_stockPosition.Stock.Type" Label="Type" />
             <MudTextField ReadOnly="true" Value="@_stockPosition.Stock.CountryName" Label="Country" />
-            <MudTextField ReadOnly="true" Value="@(_stockPosition.Stock.CurrencyCode + $"({_stockPosition.Stock.CurrencyName})")" Label="Currency" />
+            <MudTextField ReadOnly="true" Value="@(_stockPosition.Stock.CurrencyCode + $" ({_stockPosition.Stock.CurrencyName})")" Label="Currency" />
             <MudTextField ReadOnly="true" Value="@_stockPosition.Stock.Isin" Label="ISIN" />
             <MudTextField ReadOnly="true" Value="@_stockPosition.Stock.Industry" Label="Industry" />
             <MudTextField ReadOnly="true" Value="@_stockPosition.Stock.Sector" Label="Sector" />
