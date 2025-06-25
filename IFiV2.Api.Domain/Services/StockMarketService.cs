@@ -76,11 +76,30 @@ namespace IFiV2.Api.Domain.Services
             {
                 SymbolWithExchange = $"{stock.Code}.{stock.Exchange}",
                 Name = stock.Name,
-                Currency = stock.Currency,
+                CurrencyCode = stock.Currency,
                 Type = stock.Type, 
-                Country = stock.Country, 
+                CountryName = stock.Country, 
                 Isin = stock.Isin
             }).ToList();
+        }
+
+        public async Task<Stock> GetFundamentalsAsync(string symbolWithExchange)
+        {
+            var fundamentals = await _eodHdService.GetFundamentalsAsync(symbolWithExchange);
+            return new Stock()
+            {
+                Name = fundamentals.General.Name,
+                CountryName = fundamentals.General.CountryName,
+                SymbolWithExchange = fundamentals.General.PrimaryTicker,
+                Description = fundamentals.General.Description,
+                CurrencyCode = fundamentals.General.CurrencyCode,
+                CurrencyName = fundamentals.General.CurrencyName,
+                Isin = fundamentals.General.ISIN,
+                Type = fundamentals.General.Type, 
+                Industry = fundamentals.General.Industry,
+                Sector = fundamentals.General.Sector,
+                LogoURL = fundamentals.General.LogoURL
+            };
         }
     }
 }

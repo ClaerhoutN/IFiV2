@@ -16,5 +16,7 @@ namespace IFiV2.Client.Shared.ApiServices
         Task<IReadOnlyList<StockDataPoint>> GetStockDataPointsAsync([Query(collectionFormat: CollectionFormat.Multi)] string[] symbolsWithExchange, Interval interval, DateTimeOffset from, DateTimeOffset to);
         [Get("/search")]
         Task<IReadOnlyList<Stock>> SearchAsync(string search);
+        [Get("/fundamentals")]
+        Task<Stock> GetFundamentalsAsync(string symbolWithExchange);
     }
 }

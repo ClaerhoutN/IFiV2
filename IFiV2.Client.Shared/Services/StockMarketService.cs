@@ -43,7 +43,9 @@ namespace IFiV2.Client.Shared.Services
 
         private async Task<StockPosition> CreateStockPositionAsync(Stock stock)
         {      
-            var stockDataPoints = await GetStockDataPoints(stock.SymbolWithExchange);
+            var stockDataPointsTask = GetStockDataPoints(stock.SymbolWithExchange);
+            stock = await _stockMarketService.GetFundamentalsAsync(stock.SymbolWithExchange);
+            var stockDataPoints = await stockDataPointsTask;
             return new StockPosition
             {
                 Stock = stock,

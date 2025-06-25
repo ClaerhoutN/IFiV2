@@ -44,6 +44,12 @@ stockMarketApi.MapGet("/search", async (IStockMarketService _stockMarketService,
     var stocks = await _stockMarketService.SearchAsync(search);
     return Results.Ok(stocks);
 });
+stockMarketApi.MapGet("/fundamentals", async (IStockMarketService _stockMarketService,
+    string symbolWithExchange) =>
+{
+    var stock = await _stockMarketService.GetFundamentalsAsync(symbolWithExchange);
+    return Results.Ok(stock);
+});
 
 app.Run();
 

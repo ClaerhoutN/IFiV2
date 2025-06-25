@@ -1,4 +1,5 @@
-﻿using IFiV2.Models;
+﻿using IFiV2.Api.Domain.Dto;
+using IFiV2.Models;
 using Refit;
 using System;
 using System.Collections.Generic;
@@ -16,5 +17,7 @@ namespace IFiV2.Api.Domain.ApiServices
         Task<IReadOnlyList<IFiV2.Api.Domain.Dto.StockDataPoint>> GetIntradayAsync(string symbol, string interval, [AliasAs("from")]long fromUnixUTC, [AliasAs("to")]long toUnixUTC);
         [Get("/search/{query}?fmt=json")]
         Task<IReadOnlyList<IFiV2.Api.Domain.Dto.Stock>> SearchAsync(string query);
+        [Get("/fundamentals/{symbolWithExchange}?fmt=json")]
+        Task<StockFundamentals> GetFundamentalsAsync(string symbolWithExchange);
     }
 }

@@ -10,7 +10,7 @@ namespace IFiV2.Client.Maui.Services
 {
     internal class StockFileService : IStockFileService
     {
-        private const int _version = 1;
+        private const int _version = 2;
         private readonly string _stockFilePath = Path.Combine(FileSystem.Current.CacheDirectory + "stocks.json");
         private readonly string _stockDataPointFilePath = Path.Combine(FileSystem.Current.CacheDirectory + "stockDataPoints.json");
         public async Task SaveAsync(IEnumerable<StockPosition> stockPositions)
@@ -31,13 +31,13 @@ namespace IFiV2.Client.Maui.Services
             if (!IsStreamValidVersion(stockStream))
                 return new List<StockPosition>();
             else
-                stocks = System.Text.Json.JsonSerializer.Deserialize<List<Stock>>(stockStream);
+                stocks = await System.Text.Json.JsonSerializer.DeserializeAsync<List<Stock>>(stockStream);
 
             using var stockDataPointsStream = File.Open(_stockDataPointFilePath, FileMode.OpenOrCreate, FileAccess.ReadWrite);
             if (!IsStreamValidVersion(stockDataPointsStream))
                 stockDataPoints = new Dictionary<string, List<StockDataPoint>>();
             else
-                stockDataPoints = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, List<StockDataPoint>>>(stockDataPointsStream);
+                stockDataPoints = await System.Text.Json.JsonSerializer.DeserializeAsync<Dictionary<string, List<StockDataPoint>>>(stockDataPointsStream);
             
             return stocks.Select(stock =>
             {

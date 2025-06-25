@@ -8,46 +8,21 @@ namespace IFiV2.Models
 {
     public class Stock
     {
-        private string _symbolWithExchange;
-        public virtual string SymbolWithExchange
-        {
-            get => _symbolWithExchange;
-            set => _symbolWithExchange = value;
-        }
+        public string SymbolWithExchange { get; set; }
 
-        private string _name;
-        public virtual string Name
-        {
-            get => _name;
-            set => _name = value;
-        }
+        public string Name { get; set; }
 
-        private string _type;
-        public virtual string Type
-        {
-            get => _type;
-            set => _type = value;
-        }
+        public string Type { get; set; }
 
-        private string _country;
-        public virtual string Country
-        {
-            get => _country;
-            set => _country = value;
-        }
+        public string CountryName { get; set; }
 
-        private string _currency;
-        public virtual string Currency
-        {
-            get => _currency;
-            set => _currency = value;
-        }
+        public string CurrencyCode { get; set; }
+        public string CurrencyName { get; set; }
 
-        private string? _isin;
-        public virtual string? Isin
-        {
-            get => _isin;
-            set => _isin = value;
-        }
+        public string? Isin { get; set; }
+        public string Description { get; set; }
+        public string Industry { get; set; }
+        public string Sector { get; set; }
+        public string LogoURL { get; set; }
     }
 }

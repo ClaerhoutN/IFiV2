@@ -9,14 +9,17 @@ else if (_stockPosition != null)
 {
     <MudCard>
         <MudCardHeader>
-            <MudText Typo="Typo.h4">@_stockPosition.Stock.SymbolWithExchange (@_stockPosition.Stock.Country)</MudText>
+            <MudText Typo="Typo.h4">@_stockPosition.Stock.SymbolWithExchange (@_stockPosition.Stock.CountryName)</MudText>
             <MudText Typo="Typo.subtitle1">@_stockPosition.Stock.Name</MudText>
         </MudCardHeader>
         <MudCardContent>
+            <MudText Typo="Typo.subtitle1">@_stockPosition.Stock.Description</MudText>
             <MudTextField ReadOnly="true" Value="@_stockPosition.Stock.Type" Label="Type" />
-            <MudTextField ReadOnly="true" Value="@_stockPosition.Stock.Country" Label="Country" />
-            <MudTextField ReadOnly="true" Value="@_stockPosition.Stock.Currency" Label="Currency" />
+            <MudTextField ReadOnly="true" Value="@_stockPosition.Stock.CountryName" Label="Country" />
+            <MudTextField ReadOnly="true" Value="@(_stockPosition.Stock.CurrencyCode + $"({_stockPosition.Stock.CurrencyName})")" Label="Currency" />
             <MudTextField ReadOnly="true" Value="@_stockPosition.Stock.Isin" Label="ISIN" />
+            <MudTextField ReadOnly="true" Value="@_stockPosition.Stock.Industry" Label="Industry" />
+            <MudTextField ReadOnly="true" Value="@_stockPosition.Stock.Sector" Label="Sector" />
 
             <MudTextField ReadOnly="true" Style="@CellStyleFunc(_stockPosition._1DChange)" Value="@_stockPosition._1DChange" Label="24H Change" Format="P" />
             <MudTextField ReadOnly="true" Style="@CellStyleFunc(_stockPosition._7DChange)"  Value="@_stockPosition._7DChange" Label="7D Change" Format="P" />
