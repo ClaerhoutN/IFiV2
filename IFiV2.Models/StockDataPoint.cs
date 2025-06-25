@@ -9,18 +9,14 @@ namespace IFiV2.Models
 {
     public class StockDataPoint : Stock
     {
+        private readonly Stock _stock;
         public StockDataPoint()
         {            
         }
         public StockDataPoint(Stock stock, StockDataPoint stockDataPoint)
         {
-            SymbolWithExchange = stock.SymbolWithExchange;
-            Name = stock.Name;
-            Currency = stock.Currency;
-            Type = stock.Type;
-            Country = stock.Country;
-            Isin = stock.Isin;
-            
+            _stock = stock;
+
             Interval = stockDataPoint.Interval;
 
             Timestamp = stockDataPoint.Timestamp;
@@ -44,38 +40,38 @@ namespace IFiV2.Models
         //[JsonIgnore]
         public override string SymbolWithExchange
         {
-            get => base.SymbolWithExchange;
-            set => base.SymbolWithExchange = value;
+            get => _stock?.SymbolWithExchange ?? base.SymbolWithExchange;
+            set { if (_stock != null) _stock.SymbolWithExchange = value; else base.SymbolWithExchange = value; }
         }
         [JsonIgnore]
         public override string Name
         {
-            get => base.Name;
-            set => base.Name = value;
+            get => _stock?.Name ?? base.Name;
+            set { if (_stock != null) _stock.Name = value; else base.Name = value; }
         }
         [JsonIgnore]
         public override string Type
         {
-            get => base.Type;
-            set => base.Type = value;
+            get => _stock?.Type ?? base.Type;
+            set { if (_stock != null) _stock.Type = value; else base.Type = value; }
         }
         [JsonIgnore]
         public override string Country
         {
-            get => base.Country;
-            set => base.Country = value;
+            get => _stock?.Country ?? base.Country;
+            set { if (_stock != null) _stock.Country = value; else base.Country = value; }
         }
         [JsonIgnore]
         public override string Currency
         {
-            get => base.Currency;
-            set => base.Currency = value;
+            get => _stock?.Currency ?? base.Currency;
+            set { if (_stock != null) _stock.Currency = value; else base.Currency = value; }
         }
         [JsonIgnore]
         public override string Isin
         {
-            get => base.Isin;
-            set => base.Isin = value;
+            get => _stock?.Isin ?? base.Isin;
+            set { if (_stock != null) _stock.Isin = value; else base.Isin = value; }
         }
         #endregion override properties from base class to prevent them from being serialized
     }
