@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace IFiV2.Api.Domain.Services
 {
-    public class StockMarketService(IEodHdService _eodHdService) : IStockMarketService
+    public class StockMarketService(IEodHdService _eodHdService, IHttpClientFactory _httpClientFactory) : IStockMarketService
     {
         public async Task<IReadOnlyList<StockDataPoint>> GetStockDataPointsAsync(string[] symbolsWithExchange, Interval interval, DateTimeOffset from, DateTimeOffset to)
         {
@@ -85,6 +85,7 @@ namespace IFiV2.Api.Domain.Services
 
         public async Task<Stock> GetFundamentalsAsync(string symbolWithExchange)
         {
+            var client = _httpClientFactory.CreateClient(Constants.HttpClientNameEodHdApi);
             var fundamentals = await _eodHdService.GetFundamentalsAsync(symbolWithExchange);
             return new Stock()
             {
@@ -98,7 +99,19 @@ namespace IFiV2.Api.Domain.Services
                 Type = fundamentals.General.Type, 
                 Industry = fundamentals.General.Industry,
                 Sector = fundamentals.General.Sector,
-                LogoURL = fundamentals.General.LogoURL
+                LogoBytes = string.IsNullOrEmpty(fundamentals.General.LogoURL) ? null : await client.GetByteArrayAsync(fundamentals.General.LogoURL), 
+                AnalystRatings = new Dictionary<string, int>
+                {
+                    { nameof(fundamentals.AnalystRatings.StrongBuy), fundamentals.AnalystRatings.StrongBuy },
+                    { nameof(fundamentals.AnalystRatings.Buy), fundamentals.AnalystRatings.Buy },
+                    { nameof(fundamentals.AnalystRatings.Hold), fundamentals.AnalystRatings.Hold },
+                    { nameof(fundamentals.AnalystRatings.Sell), fundamentals.AnalystRatings.Sell },
+                    { nameof(fundamentals.AnalystRatings.StrongSell), fundamentals.AnalystRatings.StrongSell }
+                }, 
+                AnalystRating = fundamentals.AnalystRatings.Rating ?? 0f,
+                AnalystTargetPrice = fundamentals.AnalystRatings.TargetPrice ?? 0m, 
+                WebUrl = fundamentals.General.WebURL, 
+                
             };
         }
     }

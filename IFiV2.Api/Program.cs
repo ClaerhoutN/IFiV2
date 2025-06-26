@@ -1,3 +1,4 @@
+using IFiV2.Api.Domain;
 using IFiV2.Api.Domain.Services;
 using IFiV2.Api.Domain.Services.Interfaces;
 using IFiV2.Common.Http;
@@ -15,6 +16,9 @@ var builder = WebApplication.CreateBuilder(args);
 //});
 
 builder.Services.AddTransient<IStockMarketService, StockMarketService>();
+
+builder.Services.AddHttpClient(Constants.HttpClientNameEodHdApi, c => c.BaseAddress = new Uri(builder.Configuration["EodHdApi:Url"]))
+    .AddHttpMessageHandler(() => new AddQueryStringArgumentHandler("api_token", builder.Configuration["EodHdApi:ApiToken"]));
 
 builder.Services.AddRefitClient<IFiV2.Api.Domain.ApiServices.IEodHdService>(
             new RefitSettings(new SystemTextJsonContentSerializer(new System.Text.Json.JsonSerializerOptions

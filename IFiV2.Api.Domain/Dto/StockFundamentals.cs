@@ -153,7 +153,7 @@ namespace IFiV2.Api.Domain.Dto
         {
             public int Buy { get; set; }
             public int Hold { get; set; }
-            public decimal? Rating { get; set; }
+            public float? Rating { get; set; }
             public int Sell { get; set; }
             public int StrongBuy { get; set; }
             public int StrongSell { get; set; }

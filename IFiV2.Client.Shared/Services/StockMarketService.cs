@@ -53,9 +53,10 @@ namespace IFiV2.Client.Shared.Services
             };
         }
 
-        public Task<IReadOnlyList<Stock>> SearchAsync(string search)
+        public async Task<IReadOnlyList<Stock>> SearchAsync(string search)
         {
-            return _stockMarketService.SearchAsync(search);
+            var stocks = await _stockMarketService.SearchAsync(search);
+            return stocks.Where(x => !_stockPositions.Any(y => y.Stock.SymbolWithExchange == x.SymbolWithExchange)).ToList();//exclude already added stocks
         }
 
         public StockPosition GetStockPosition(string symbolWithExchange)

@@ -7,6 +7,10 @@
     <Columns>
         <PropertyColumn Property="@(x => x.Stock.SymbolWithExchange)" Title="Symbol">
             <CellTemplate>
+                @if (context.Item.Stock.LogoBytes?.Length > 0)
+                {
+                    <MudImage Src="@($"data:image/png;base64,{Convert.ToBase64String(context.Item.Stock.LogoBytes)}")" Width="50" />
+                }
                 <MudText Typo="Typo.h4">@context.Item.Stock.SymbolWithExchange</MudText>
                 <MudText Typo="Typo.subtitle1">@context.Item.Stock.Name</MudText>
             </CellTemplate>
@@ -15,7 +19,7 @@
         <PropertyColumn T=StockPosition TProperty="float" Property="@(x => x._1DChange)" CellStyleFunc="CellStyleFunc" Title="24H change" Format="P" />
         <TemplateColumn>
             <CellTemplate>
-                <Chart Height="200px" Width="250px" ShowTickLabels=false GetDataPoints="@(() => context.Item.DayDatapoints)" @ref=_chart />
+                <DataPointChart Height="200px" Width="250px" ShowTickLabels=false GetDataPoints="@(() => context.Item.DayDatapoints)" @ref=_chart />
             </CellTemplate>
         </TemplateColumn>
     </Columns>
@@ -26,7 +30,7 @@
     private IStockMarketService _stockMarketService { get; set; }
     [Inject]
     private NavigationManager _navigationManager { get; set; }
-    private Chart _chart;
+    private DataPointChart _chart;
     private IReadOnlyList<StockPosition> _stockPositions = new List<StockPosition>();
     private bool _isLoading = true;
     private static bool _isFirstLoad = true;

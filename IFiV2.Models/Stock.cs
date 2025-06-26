@@ -22,7 +22,12 @@ namespace IFiV2.Models
         public string? Isin { get; set; }
         public string? Description { get; set; }
         public string? Industry { get; set; }
+        public string? WebUrl { get; set; }
+
         public string? Sector { get; set; }
-        public string? LogoURL { get; set; }
+        public byte[]? LogoBytes { get; set; }
+        public Dictionary<string, int> AnalystRatings { get; set; } = new Dictionary<string, int>();
+        public decimal AnalystTargetPrice { get; set; }
+        public float AnalystRating { get; set; }
     }
 }

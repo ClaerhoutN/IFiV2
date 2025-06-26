@@ -1,0 +1,88 @@
+﻿@using Plotly.Blazor
+@using Plotly.Blazor.Traces
+<PlotlyChart style="@($"width: {Width}; height: {Height};")" @bind-Config=_chartConfig @bind-Layout=_chartLayout Data="_chartData" @ref=_chart />
+
+@code {
+    [Parameter]
+    public required string Height { get; set; }
+    [Parameter]
+    public required string Width { get; set; }
+    [Parameter]
+    public bool ShowTickLabels { get; set; }
+    [Parameter]
+    public IReadOnlyDictionary<string, int> Ratings { get; set; }
+    private Config _chartConfig;
+    private PlotlyChart _chart;
+    private Layout _chartLayout;
+    private IList<ITrace> _chartData;
+    private List<Bar> bars = new List<Bar>();
+    private readonly IReadOnlyCollection<string> _colors = ["green", "blue", "yellow", "cyan", "purple", "red"];
+
+    protected override async Task OnInitializedAsync()
+    {
+        _chartConfig = new Config
+        {
+            DisplayModeBar = Plotly.Blazor.ConfigLib.DisplayModeBarEnum.False,
+
+        };
+        _chartLayout = new Layout
+        {
+            XAxis = [new Plotly.Blazor.LayoutLib.XAxis
+            {
+                ShowGrid = false, 
+                ShowLine = false, 
+                ZeroLine = false,
+                ShowTickLabels = ShowTickLabels,
+            }],
+            YAxis = [new Plotly.Blazor.LayoutLib.YAxis
+            {
+                ShowGrid = false,
+                ShowLine = false,
+                ZeroLine = false,
+                ShowTickLabels = ShowTickLabels,
+            }],
+            HoverMode = Plotly.Blazor.LayoutLib.HoverModeEnum.False,
+            BarMode = Plotly.Blazor.LayoutLib.BarModeEnum.Stack,
+            ShowLegend = false
+        };
+        if (!ShowTickLabels)
+        {
+            _chartLayout.Margin = new Plotly.Blazor.LayoutLib.Margin
+            {
+                T = 0, // Top margin
+                R = 0, // Right margin
+                B = 0, // Bottom margin
+                L = 0, // Left margin
+                Pad = 0 // Padding
+            };
+        }
+        int i = 0;
+        foreach(var rating in Ratings)
+        {
+            bars.Add(new Bar
+            {
+                X = [rating.Value],
+                Y = ["analyst ratings"],
+                Name = rating.Key,
+                Orientation = Plotly.Blazor.Traces.BarLib.OrientationEnum.H,
+                Marker = new Plotly.Blazor.Traces.BarLib.Marker
+                {
+                    Color = _colors.ElementAt(i),
+                    Line = null
+                }, 
+                Text = rating.Key + $"( {rating.Value})", 
+                TextPosition = Plotly.Blazor.Traces.BarLib.TextPositionEnum.Auto, 
+                InsideTextAnchor = Plotly.Blazor.Traces.BarLib.InsideTextAnchorEnum.Middle
+            });
+            ++i;
+        }
+        _chartData = new List<ITrace>(bars);
+        await UpdateChartAsync();
+    }
+
+    public async Task UpdateChartAsync()
+    {
+        if (_chart != null)
+            await _chart.React();
+    }
+}
